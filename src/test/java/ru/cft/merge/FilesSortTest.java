@@ -169,4 +169,18 @@ public class FilesSortTest {
         String expected = "643151";
         Assert.assertEquals(expected, rsl.toString());
     }
+
+    @Test
+    public void whenSortIntAscNoIncorrectDataAndOneInputFile() throws IOException {
+        String outputFilePath = folder.newFile("out.txt").getPath();
+        String[] args = new String[] {"-i", "-a", outputFilePath, inputFilePath1};
+        Options opt = Options.of(args);
+        FilesSort.sort(opt);
+        StringBuilder rsl = new StringBuilder();
+        try (BufferedReader in = new BufferedReader(new FileReader(outputFilePath))) {
+            in.lines().forEach(rsl::append);
+        }
+        String expected = "149";
+        Assert.assertEquals(expected, rsl.toString());
+    }
 }

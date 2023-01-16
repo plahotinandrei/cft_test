@@ -24,13 +24,14 @@ public class FilesSort {
         Path rsl = null;
         Queue<Path> queue = new LinkedList<>(inputFiles);
         while (!queue.isEmpty()) {
+            if (queue.size() == 1) {
+                rsl = queue.poll();
+                break;
+            }
             Path p = Type.INT.equals(dataType)
                     ? mergeInt(queue.poll(), queue.poll())
                     : mergeStr(queue.poll(), queue.poll());
             queue.offer(p);
-            if (queue.size() == 1) {
-                rsl = queue.poll();
-            }
         }
         return rsl;
     }
