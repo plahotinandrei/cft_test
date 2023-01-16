@@ -9,12 +9,12 @@
 </p>
 
 <h2>Использованные средства</h2>
-<p><a href="https://www.oracle.com/java/technologies/javase-jdk15-downloads.html">Open JDK 17</a> - компилятор\интерпритатор</p>
-<p><a href="https://maven.apache.org/index.html">Maven 3.8.5</a> - сборка и управление проектом</p>
-<p><a href="https://mvnrepository.com/artifact/junit/junit/4.13">JUnit 4.13.2</a> - модульное тестирование</p>
-<p><a href="https://mvnrepository.com/artifact/commons-io/commons-io/2.11.0">Apache Commons IO 2.11.0</a> - библиотека для работы с потоками ввода-вывода</p>
-<p><a href="https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-checkstyle-plugin">Apache Maven Checkstyle Plugin 3.2.0</a> - автоматическая инспекция кодa</p>
-<p><a href="https://maven.apache.org/plugins/maven-shade-plugin/">Apache Maven Shade Plugin 3.0.0</a> - упаковка проекта со всеми необходимыми зависимостями в jar-архив</p>
+<p><a href="https://www.oracle.com/java/technologies/javase-jdk15-downloads.html" target="_blank">Open JDK 17</a> - компилятор\интерпритатор</p>
+<p><a href="https://maven.apache.org/index.html" target="_blank">Maven 3.8.5</a> - сборка и управление проектом</p>
+<p><a href="https://mvnrepository.com/artifact/junit/junit/4.13" target="_blank">JUnit 4.13.2</a> - модульное тестирование</p>
+<p><a href="https://mvnrepository.com/artifact/commons-io/commons-io/2.11.0" target="_blank">Apache Commons IO 2.11.0</a> - библиотека для работы с потоками ввода-вывода</p>
+<p><a href="https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-checkstyle-plugin" target="_blank">Apache Maven Checkstyle Plugin 3.2.0</a> - автоматическая инспекция кодa</p>
+<p><a href="https://maven.apache.org/plugins/maven-shade-plugin/" target="_blank">Apache Maven Shade Plugin 3.0.0</a> - упаковка проекта со всеми необходимыми зависимостями в jar-архив</p>
 
 <h2>Компиляция</h2>
 <pre>
