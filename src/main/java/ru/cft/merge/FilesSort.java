@@ -3,7 +3,6 @@ package ru.cft.merge;
 import org.apache.commons.io.input.ReversedLinesFileReader;
 import java.io.*;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
@@ -61,20 +60,20 @@ public class FilesSort {
                 }
                 if (isInteger(current1) && isInteger(current2)) {
                     if (Integer.parseInt(current1) < Integer.parseInt(current2)) {
-                        write.write(current1 + "\n");
+                        write.write(current1 + System.lineSeparator());
                         prev1 = Integer.parseInt(current1);
                         current1 = read1.readLine();
                     } else {
-                        write.write(current2 + "\n");
+                        write.write(current2 + System.lineSeparator());
                         prev2 = Integer.parseInt(current2);
                         current2 = read2.readLine();
                     }
                 } else if (isInteger(current1)) {
-                    write.write(current1 + "\n");
+                    write.write(current1 + System.lineSeparator());
                     prev1 = Integer.parseInt(current1);
                     current1 = read1.readLine();
                 } else if (isInteger(current2)) {
-                    write.write(current2 + "\n");
+                    write.write(current2 + System.lineSeparator());
                     prev2 = Integer.parseInt(current2);
                     current2 = read2.readLine();
                 } else {
@@ -109,20 +108,20 @@ public class FilesSort {
                 }
                 if (current1 != null && current2 != null) {
                     if (current1.compareTo(current2) < 0) {
-                        write.write(current1 + "\n");
+                        write.write(current1 + System.lineSeparator());
                         prev1 = current1;
                         current1 = read1.readLine();
                     } else {
-                        write.write(current2 + "\n");
+                        write.write(current2 + System.lineSeparator());
                         prev2 = current2;
                         current2 = read2.readLine();
                     }
                 } else if (current1 != null) {
-                    write.write(current1 + "\n");
+                    write.write(current1 + System.lineSeparator());
                     prev1 = current1;
                     current1 = read1.readLine();
                 } else if (current2 != null) {
-                    write.write(current2 + "\n");
+                    write.write(current2 + System.lineSeparator());
                     prev2 = current2;
                     current2 = read2.readLine();
                 } else {
