@@ -14,5 +14,6 @@ public class Start {
     public static void main(String[] args) {
         Options opt = Options.of(args);
         new Start(opt).init();
+        System.out.println("Sorting completed successfully!");
     }
 }

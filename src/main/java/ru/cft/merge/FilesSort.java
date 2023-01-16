@@ -142,7 +142,7 @@ public class FilesSort {
         ) {
             String line;
             while ((line = read.readLine()) != null) {
-                write.write(line);
+                write.write(line + System.lineSeparator());
             }
         } catch (IOException e) {
             throw new IllegalArgumentException("Resource error", e);
@@ -156,7 +156,7 @@ public class FilesSort {
         ) {
             String line;
             while ((line = read.readLine()) != null) {
-                write.write(line);
+                write.write(line + System.lineSeparator());
             }
         } catch (IOException e) {
             throw new IllegalArgumentException("Resource error", e);
