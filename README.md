@@ -36,7 +36,7 @@ $ java -jar cft_test.jar -i -a out.txt in1.txt in2.txt in3.txt</code>
     <li>in1.txt и т. д. - путь до входных существующих файлов (если файла по заданному пути не существует, то программа завершится с ошибкой), не менее одного.</li>
 </ol>
 
-<h3>Пример запуска программа в ОС Windows 10</h3>
+<h3>Пример запуска программы в ОС Windows 10</h3>
 <pre>
 <code>$ cd target
 $ java -jar cft_test.jar -s -d C:\Users\user\Desktop\out.txt C:\Users\user\Desktop\in1.txt C:\Users\user\Desktop\in2.txt</code>
