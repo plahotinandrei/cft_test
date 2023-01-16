@@ -7,25 +7,35 @@ import java.util.*;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+enum Mode {
+    ASC,
+    DESC
+}
+
+enum Type {
+    STRING,
+    INT
+}
+
 public class Options {
-    private String sortMode = "ASC";
-    private String dataType;
+    private Mode sortMode = Mode.ASC;
+    private Type dataType;
     private Path outputFile;
     private List<Path> inputFiles = new ArrayList<>();
 
-    public String getSortMode() {
+    public Mode getSortMode() {
         return sortMode;
     }
 
-    public void setSortMode(String sortMode) {
+    public void setSortMode(Mode sortMode) {
         this.sortMode = sortMode;
     }
 
-    public String getDataType() {
+    public Type getDataType() {
         return dataType;
     }
 
-    public void setDataType(String dataType) {
+    public void setDataType(Type dataType) {
         this.dataType = dataType;
     }
 
@@ -58,12 +68,12 @@ public class Options {
         Set<String> modes = Arrays.stream(args)
                 .filter((s) -> s.startsWith("-")).collect(Collectors.toSet());
         if (modes.contains("-d")) {
-            setSortMode("DESC");
+            setSortMode(Mode.DESC);
         }
         if (modes.contains("-s")) {
-            setDataType("String");
+            setDataType(Type.STRING);
         } else if (modes.contains("-i")) {
-            setDataType("int");
+            setDataType(Type.INT);
         } else {
             throw new IllegalArgumentException("Data type argument not found");
         }

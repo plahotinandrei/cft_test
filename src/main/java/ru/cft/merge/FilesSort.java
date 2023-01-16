@@ -13,18 +13,18 @@ public class FilesSort {
     public static void sort(Options opt) throws IOException {
         Path srcPath = merge(opt.getInputFiles(), opt.getDataType());
         Path destPath = opt.getOutputFile();
-        if ("ASC".equals(opt.getSortMode())) {
+        if (Mode.ASC.equals(opt.getSortMode())) {
             writeAsc(srcPath, destPath);
         } else {
             writeDesc(srcPath, destPath);
         }
     }
 
-    private static Path merge(List<Path> inputFiles, String dataType) throws IOException {
+    private static Path merge(List<Path> inputFiles, Type dataType) throws IOException {
         Path rsl = null;
         Queue<Path> queue = new LinkedList<>(inputFiles);
         while (!queue.isEmpty()) {
-            Path p = "int".equals(dataType)
+            Path p = Type.INT.equals(dataType)
                     ? mergeInt(queue.poll(), queue.poll())
                     : mergeStr(queue.poll(), queue.poll());
             queue.offer(p);
