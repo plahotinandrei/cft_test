@@ -10,7 +10,7 @@ import static ru.cft.merge.Utils.*;
 
 public class FilesSort {
 
-    public static void sort(Options opt) {
+    public static void sort(Options opt) throws IOException {
         Path srcPath = merge(opt.getInputFiles(), opt.getDataType());
         Path destPath = opt.getOutputFile();
         if ("ASC".equals(opt.getSortMode())) {
@@ -20,21 +20,17 @@ public class FilesSort {
         }
     }
 
-    private static Path merge(List<Path> inputFiles, String dataType) {
+    private static Path merge(List<Path> inputFiles, String dataType) throws IOException {
         Path rsl = null;
         Queue<Path> queue = new LinkedList<>(inputFiles);
-        try {
-            while (!queue.isEmpty()) {
-                Path p = "int".equals(dataType)
-                        ? mergeInt(queue.poll(), queue.poll())
-                        : mergeStr(queue.poll(), queue.poll());
-                queue.offer(p);
-                if (queue.size() == 1) {
-                    rsl = queue.poll();
-                }
+        while (!queue.isEmpty()) {
+            Path p = "int".equals(dataType)
+                    ? mergeInt(queue.poll(), queue.poll())
+                    : mergeStr(queue.poll(), queue.poll());
+            queue.offer(p);
+            if (queue.size() == 1) {
+                rsl = queue.poll();
             }
-        } catch (IOException e) {
-            throw new IllegalArgumentException("Resource error", e);
         }
         return rsl;
     }
@@ -81,8 +77,6 @@ public class FilesSort {
                     current2 = read2.readLine();
                 }
             }
-        } catch (IOException e) {
-            throw new IllegalArgumentException("Resource error", e);
         }
         return tmp.toPath();
     }
@@ -129,13 +123,11 @@ public class FilesSort {
                     current2 = read2.readLine();
                 }
             }
-        } catch (IOException e) {
-            throw new IllegalArgumentException("Resource error", e);
         }
         return tmp.toPath();
     }
 
-    private static void writeAsc(Path src, Path dest) {
+    private static void writeAsc(Path src, Path dest) throws IOException {
         try (
             BufferedReader read = new BufferedReader(new FileReader(src.toFile()));
             BufferedWriter write = new BufferedWriter(new FileWriter(dest.toFile()))
@@ -144,12 +136,10 @@ public class FilesSort {
             while ((line = read.readLine()) != null) {
                 write.write(line + System.lineSeparator());
             }
-        } catch (IOException e) {
-            throw new IllegalArgumentException("Resource error", e);
         }
     }
 
-    private static void writeDesc(Path src, Path dest) {
+    private static void writeDesc(Path src, Path dest) throws IOException {
         try (
                 ReversedLinesFileReader read = new ReversedLinesFileReader(src.toFile());
                 BufferedWriter write = new BufferedWriter(new FileWriter(dest.toFile()))
@@ -158,8 +148,6 @@ public class FilesSort {
             while ((line = read.readLine()) != null) {
                 write.write(line + System.lineSeparator());
             }
-        } catch (IOException e) {
-            throw new IllegalArgumentException("Resource error", e);
         }
     }
 }
