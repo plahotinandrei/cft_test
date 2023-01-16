@@ -1,5 +1,7 @@
 package ru.cft.merge;
 
+import java.util.regex.Pattern;
+
 public class Utils {
     public static boolean isInteger(String str) {
         if (str == null) {
@@ -11,5 +13,9 @@ public class Utils {
         } catch (NumberFormatException e) {
             return false;
         }
+    }
+
+    public static boolean noSpace(String str) {
+        return Pattern.matches("^\\S*$", str);
     }
 }

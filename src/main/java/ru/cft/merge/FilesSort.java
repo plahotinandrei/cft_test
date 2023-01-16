@@ -1,31 +1,27 @@
 package ru.cft.merge;
 
+import org.apache.commons.io.input.ReversedLinesFileReader;
 import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
-
 import static ru.cft.merge.Utils.*;
 
 public class FilesSort {
-    public static void main(String[] args) throws IOException {
-        Path p1 = Paths.get("in1.txt");
-        Path p2 = Paths.get("in2.txt");
-        Path p3 = Paths.get("in3.txt");
-        Path p4 = Paths.get("in4.txt");
-        Path p5 = Paths.get("in5.txt");
-        Path out = merge(List.of(p1, p2, p3, p4, p5), "int");
-        try (BufferedReader read = new BufferedReader(new FileReader(out.toFile()))) {
-            String line;
-            while ((line = read.readLine()) != null) {
-                System.out.println(line);
-            }
+
+    public static void sort(Options opt) {
+        Path srcPath = merge(opt.getInputFiles(), opt.getDataType());
+        Path destPath = opt.getOutputFile();
+        if ("ASC".equals(opt.getSortMode())) {
+            writeAsc(srcPath, destPath);
+        } else {
+            writeDesc(srcPath, destPath);
         }
     }
 
-    public static Path merge(List<Path> inputFiles, String dataType) {
+    private static Path merge(List<Path> inputFiles, String dataType) {
         Path rsl = null;
         Queue<Path> queue = new LinkedList<>(inputFiles);
         try {
@@ -105,10 +101,10 @@ public class FilesSort {
             String prev1 = "";
             String prev2 = "";
             while (current1 != null || current2 != null) {
-                while (current1 != null && current1.compareTo(prev1) < 0) {
+                while (current1 != null && (current1.compareTo(prev1) < 0 || !noSpace(current1))) {
                     current1 = read1.readLine();
                 }
-                while (current2 != null && current2.compareTo(prev2) < 0) {
+                while (current2 != null && (current2.compareTo(prev2) < 0 || !noSpace(current2))) {
                     current2 = read2.readLine();
                 }
                 if (current1 != null && current2 != null) {
@@ -138,5 +134,33 @@ public class FilesSort {
             throw new IllegalArgumentException("Resource error", e);
         }
         return tmp.toPath();
+    }
+
+    private static void writeAsc(Path src, Path dest) {
+        try (
+            BufferedReader read = new BufferedReader(new FileReader(src.toFile()));
+            BufferedWriter write = new BufferedWriter(new FileWriter(dest.toFile()))
+        ) {
+            String line;
+            while ((line = read.readLine()) != null) {
+                write.write(line);
+            }
+        } catch (IOException e) {
+            throw new IllegalArgumentException("Resource error", e);
+        }
+    }
+
+    private static void writeDesc(Path src, Path dest) {
+        try (
+                ReversedLinesFileReader read = new ReversedLinesFileReader(src.toFile());
+                BufferedWriter write = new BufferedWriter(new FileWriter(dest.toFile()))
+        ) {
+            String line;
+            while ((line = read.readLine()) != null) {
+                write.write(line);
+            }
+        } catch (IOException e) {
+            throw new IllegalArgumentException("Resource error", e);
+        }
     }
 }
