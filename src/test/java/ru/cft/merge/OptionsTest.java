@@ -30,8 +30,8 @@ public class OptionsTest {
         String[] args = new String[] {"-i", "-a", outputFilePath, inputFilePath1};
         Options rsl = Options.of(args);
         Options expected = new Options();
-        expected.setSortMode(Mode.ASC);
-        expected.setDataType(Type.INT);
+        expected.setSortMode(SortMode.ASC);
+        expected.setDataType(SortType.INT);
         expected.setOutputFile(Paths.get(outputFilePath));
         List<Path> inputFiles = List.of(Paths.get(inputFilePath1));
         expected.setInputFiles(inputFiles);
@@ -43,8 +43,8 @@ public class OptionsTest {
         String[] args = new String[] {"-s", "-d", outputFilePath, inputFilePath1, inputFilePath2};
         Options rsl = Options.of(args);
         Options expected = new Options();
-        expected.setSortMode(Mode.DESC);
-        expected.setDataType(Type.STRING);
+        expected.setSortMode(SortMode.DESC);
+        expected.setDataType(SortType.STRING);
         expected.setOutputFile(Paths.get(outputFilePath));
         List<Path> inputFiles = List.of(Paths.get(inputFilePath1), Paths.get(inputFilePath2));
         expected.setInputFiles(inputFiles);
@@ -56,8 +56,8 @@ public class OptionsTest {
         String[] args = new String[] {"-i", outputFilePath, inputFilePath1};
         Options rsl = Options.of(args);
         Options expected = new Options();
-        expected.setSortMode(Mode.ASC);
-        expected.setDataType(Type.INT);
+        expected.setSortMode(SortMode.ASC);
+        expected.setDataType(SortType.INT);
         expected.setOutputFile(Paths.get(outputFilePath));
         List<Path> inputFiles = List.of(Paths.get(inputFilePath1));
         expected.setInputFiles(inputFiles);
@@ -69,8 +69,8 @@ public class OptionsTest {
         String[] args = new String[] {"-s", outputFilePath, inputFilePath1};
         Options rsl = Options.of(args);
         Options expected = new Options();
-        expected.setSortMode(Mode.ASC);
-        expected.setDataType(Type.STRING);
+        expected.setSortMode(SortMode.ASC);
+        expected.setDataType(SortType.STRING);
         expected.setOutputFile(Paths.get(outputFilePath));
         List<Path> inputFiles = List.of(Paths.get(inputFilePath1));
         expected.setInputFiles(inputFiles);
