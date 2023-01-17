@@ -40,25 +40,25 @@ public class FilesSort {
         File tmp = File.createTempFile(src1 + "_" + src2, ".txt");
         tmp.deleteOnExit();
         try (
-                BufferedReader read1 = new BufferedReader(new FileReader(src1.toFile()));
-                BufferedReader read2 = new BufferedReader(new FileReader(src2.toFile()));
-                BufferedWriter write = new BufferedWriter(new FileWriter(tmp))
+                BufferedReader reader1 = new BufferedReader(new FileReader(src1.toFile()));
+                BufferedReader reader2 = new BufferedReader(new FileReader(src2.toFile()));
+                BufferedWriter writer = new BufferedWriter(new FileWriter(tmp))
         ) {
-            Integer current1 = getNextValidNumber(read1, Integer.MIN_VALUE);
-            Integer current2 = getNextValidNumber(read2, Integer.MIN_VALUE);
+            Integer current1 = getNextValidNumber(reader1, Integer.MIN_VALUE);
+            Integer current2 = getNextValidNumber(reader2, Integer.MIN_VALUE);
             while (current1 != null || current2 != null) {
                 if (current1 != null && current2 != null) {
                     if (current1 < current2) {
-                        write.write(current1 + System.lineSeparator());
-                        current1 = getNextValidNumber(read1, current1);
+                        writer.write(current1 + System.lineSeparator());
+                        current1 = getNextValidNumber(reader1, current1);
                     } else {
-                        write.write(current2 + System.lineSeparator());
-                        current2 = getNextValidNumber(read2, current2);
+                        writer.write(current2 + System.lineSeparator());
+                        current2 = getNextValidNumber(reader2, current2);
                     }
                 } else {
-                    write.write((current1 == null ? current2 : current1) + System.lineSeparator());
-                    current1 = getNextValidNumber(read1, current1);
-                    current2 = getNextValidNumber(read2, current2);
+                    writer.write((current1 == null ? current2 : current1) + System.lineSeparator());
+                    current1 = getNextValidNumber(reader1, current1);
+                    current2 = getNextValidNumber(reader2, current2);
                 }
             }
         }
@@ -69,25 +69,25 @@ public class FilesSort {
         File tmp = File.createTempFile(src1 + "_" + src2, ".txt");
         tmp.deleteOnExit();
         try (
-                BufferedReader read1 = new BufferedReader(new FileReader(src1.toFile()));
-                BufferedReader read2 = new BufferedReader(new FileReader(src2.toFile()));
-                BufferedWriter write = new BufferedWriter(new FileWriter(tmp))
+                BufferedReader reader1 = new BufferedReader(new FileReader(src1.toFile()));
+                BufferedReader reader2 = new BufferedReader(new FileReader(src2.toFile()));
+                BufferedWriter writer = new BufferedWriter(new FileWriter(tmp))
         ) {
-            String current1 = getNextValidString(read1, "");
-            String current2 = getNextValidString(read2, "");
+            String current1 = getNextValidString(reader1, "");
+            String current2 = getNextValidString(reader2, "");
             while (current1 != null || current2 != null) {
                 if (current1 != null && current2 != null) {
                     if (current1.compareTo(current2) < 0) {
-                        write.write(current1 + System.lineSeparator());
-                        current1 = getNextValidString(read1, current1);
+                        writer.write(current1 + System.lineSeparator());
+                        current1 = getNextValidString(reader1, current1);
                     } else {
-                        write.write(current2 + System.lineSeparator());
-                        current2 = getNextValidString(read2, current2);
+                        writer.write(current2 + System.lineSeparator());
+                        current2 = getNextValidString(reader2, current2);
                     }
                 } else {
-                    write.write((current1 == null ? current2 : current1) + System.lineSeparator());
-                    current1 = getNextValidString(read1, current1);
-                    current2 = getNextValidString(read2, current2);
+                    writer.write((current1 == null ? current2 : current1) + System.lineSeparator());
+                    current1 = getNextValidString(reader1, current1);
+                    current2 = getNextValidString(reader2, current2);
                 }
             }
         }
@@ -96,7 +96,7 @@ public class FilesSort {
 
     private static Integer getNextValidNumber(BufferedReader reader, Integer prevValue) throws IOException {
         String line = reader.readLine();
-        while (isInteger(line) && prevValue > Integer.parseInt(line) || line != null && !isInteger(line)) {
+        while (line != null && (isInteger(line) && prevValue > Integer.parseInt(line) || !isInteger(line))) {
             line = reader.readLine();
         }
         return line == null ? null : Integer.parseInt(line);
@@ -112,24 +112,24 @@ public class FilesSort {
 
     private static void writeAsc(Path src, Path dest) throws IOException {
         try (
-            BufferedReader read = new BufferedReader(new FileReader(src.toFile()));
-            BufferedWriter write = new BufferedWriter(new FileWriter(dest.toFile()))
+            BufferedReader reader = new BufferedReader(new FileReader(src.toFile()));
+            BufferedWriter writer = new BufferedWriter(new FileWriter(dest.toFile()))
         ) {
             String line;
-            while ((line = read.readLine()) != null) {
-                write.write(line + System.lineSeparator());
+            while ((line = reader.readLine()) != null) {
+                writer.write(line + System.lineSeparator());
             }
         }
     }
 
     private static void writeDesc(Path src, Path dest) throws IOException {
         try (
-                ReversedLinesFileReader read = new ReversedLinesFileReader(src.toFile());
-                BufferedWriter write = new BufferedWriter(new FileWriter(dest.toFile()))
+                ReversedLinesFileReader reader = new ReversedLinesFileReader(src.toFile());
+                BufferedWriter writer = new BufferedWriter(new FileWriter(dest.toFile()))
         ) {
             String line;
-            while ((line = read.readLine()) != null) {
-                write.write(line + System.lineSeparator());
+            while ((line = reader.readLine()) != null) {
+                writer.write(line + System.lineSeparator());
             }
         }
     }
