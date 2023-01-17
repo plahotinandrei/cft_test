@@ -23,45 +23,45 @@ public class FilesSortTest {
     public void initData() throws IOException {
         inputFilePath1 = folder.newFile("in1.txt").getPath();
         try (BufferedWriter write = new BufferedWriter(new FileWriter(inputFilePath1))) {
-            write.write("1\n");
-            write.write("4\n");
-            write.write("9\n");
+            write.write("1" + System.lineSeparator());
+            write.write("4" + System.lineSeparator());
+            write.write("9" + System.lineSeparator());
         }
         inputFilePath2 = folder.newFile("in2.txt").getPath();
         try (BufferedWriter write = new BufferedWriter(new FileWriter(inputFilePath2))) {
-            write.write("1\n");
-            write.write("8\n");
-            write.write("27\n");
+            write.write("1" + System.lineSeparator());
+            write.write("8" + System.lineSeparator());
+            write.write("27" + System.lineSeparator());
         }
         inputFilePath3 = folder.newFile("in3.txt").getPath();
         try (BufferedWriter write = new BufferedWriter(new FileWriter(inputFilePath3))) {
-            write.write("1\n");
-            write.write("2\n");
-            write.write("3\n");
+            write.write("1" + System.lineSeparator());
+            write.write("2" + System.lineSeparator());
+            write.write("3" + System.lineSeparator());
         }
         inputFilePath4 = folder.newFile("in4.txt").getPath();
         try (BufferedWriter write = new BufferedWriter(new FileWriter(inputFilePath4))) {
-            write.write("1\n");
-            write.write("15\n");
-            write.write("3\n");
-            write.write("4\n");
-            write.write("16\n");
-            write.write("18q\n");
+            write.write("1" + System.lineSeparator());
+            write.write("15" + System.lineSeparator());
+            write.write("3" + System.lineSeparator());
+            write.write("4" + System.lineSeparator());
+            write.write("16" + System.lineSeparator());
+            write.write("18q" + System.lineSeparator());
         }
         inputFilePath5 = folder.newFile("in5.txt").getPath();
         try (BufferedWriter write = new BufferedWriter(new FileWriter(inputFilePath5))) {
-            write.write("6\n");
-            write.write("3\n");
-            write.write("11\n");
-            write.write("23\n");
-            write.write(" 25\n");
-            write.write("3 2\n");
+            write.write("6" + System.lineSeparator());
+            write.write("3" + System.lineSeparator());
+            write.write("11" + System.lineSeparator());
+            write.write("23" + System.lineSeparator());
+            write.write(" 25" + System.lineSeparator());
+            write.write("3 2" + System.lineSeparator());
         }
         inputFilePath6 = folder.newFile("in6.txt").getPath();
         try (BufferedWriter write = new BufferedWriter(new FileWriter(inputFilePath6))) {
-            write.write(Integer.MIN_VALUE + "\n");
-            write.write("3\n");
-            write.write("11\n");
+            write.write(Integer.MIN_VALUE + System.lineSeparator());
+            write.write("3" + System.lineSeparator());
+            write.write("11" + System.lineSeparator());
         }
     }
 
