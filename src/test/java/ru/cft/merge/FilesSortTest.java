@@ -14,6 +14,7 @@ public class FilesSortTest {
     String inputFilePath3;
     String inputFilePath4;
     String inputFilePath5;
+    String inputFilePath6;
 
     @Rule
     public TemporaryFolder folder = new TemporaryFolder();
@@ -55,6 +56,12 @@ public class FilesSortTest {
             write.write("23\n");
             write.write(" 25\n");
             write.write("3 2\n");
+        }
+        inputFilePath6 = folder.newFile("in6.txt").getPath();
+        try (BufferedWriter write = new BufferedWriter(new FileWriter(inputFilePath6))) {
+            write.write(Integer.MIN_VALUE + "\n");
+            write.write("3\n");
+            write.write("11\n");
         }
     }
 
@@ -181,6 +188,20 @@ public class FilesSortTest {
             in.lines().forEach(rsl::append);
         }
         String expected = "149";
+        Assert.assertEquals(expected, rsl.toString());
+    }
+
+    @Test
+    public void whenSortIntAscNoIncorrectDataAndInputFileContainsMinValue() throws IOException {
+        String outputFilePath = folder.newFile("out.txt").getPath();
+        String[] args = new String[] {"-i", "-a", outputFilePath, inputFilePath1, inputFilePath6};
+        Options opt = Options.of(args);
+        FilesSort.sort(opt);
+        StringBuilder rsl = new StringBuilder();
+        try (BufferedReader in = new BufferedReader(new FileReader(outputFilePath))) {
+            in.lines().forEach(rsl::append);
+        }
+        String expected = Integer.MIN_VALUE + "134911";
         Assert.assertEquals(expected, rsl.toString());
     }
 }
