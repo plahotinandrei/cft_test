@@ -44,38 +44,21 @@ public class FilesSort {
                 BufferedReader read2 = new BufferedReader(new FileReader(src2.toFile()));
                 BufferedWriter write = new BufferedWriter(new FileWriter(tmp))
         ) {
-            String current1 = read1.readLine();
-            String current2 = read2.readLine();
-            int prev1 = Integer.MIN_VALUE;
-            int prev2 = Integer.MIN_VALUE;
+            Integer current1 = getNextValidNumber(read1, Integer.MIN_VALUE);
+            Integer current2 = getNextValidNumber(read2, Integer.MIN_VALUE);
             while (current1 != null || current2 != null) {
-                while (isInteger(current1) && prev1 > Integer.parseInt(current1)) {
-                    current1 = read1.readLine();
-                }
-                while (isInteger(current2) && prev2 > Integer.parseInt(current2)) {
-                    current2 = read2.readLine();
-                }
-                if (isInteger(current1) && isInteger(current2)) {
-                    if (Integer.parseInt(current1) < Integer.parseInt(current2)) {
+                if (current1 != null && current2 != null) {
+                    if (current1 < current2) {
                         write.write(current1 + System.lineSeparator());
-                        prev1 = Integer.parseInt(current1);
-                        current1 = read1.readLine();
+                        current1 = getNextValidNumber(read1, current1);
                     } else {
                         write.write(current2 + System.lineSeparator());
-                        prev2 = Integer.parseInt(current2);
-                        current2 = read2.readLine();
+                        current2 = getNextValidNumber(read2, current2);
                     }
-                } else if (isInteger(current1)) {
-                    write.write(current1 + System.lineSeparator());
-                    prev1 = Integer.parseInt(current1);
-                    current1 = read1.readLine();
-                } else if (isInteger(current2)) {
-                    write.write(current2 + System.lineSeparator());
-                    prev2 = Integer.parseInt(current2);
-                    current2 = read2.readLine();
                 } else {
-                    current1 = read1.readLine();
-                    current2 = read2.readLine();
+                    write.write((current1 == null ? current2 : current1) + System.lineSeparator());
+                    current1 = getNextValidNumber(read1, current1);
+                    current2 = getNextValidNumber(read2, current2);
                 }
             }
         }
@@ -90,42 +73,41 @@ public class FilesSort {
                 BufferedReader read2 = new BufferedReader(new FileReader(src2.toFile()));
                 BufferedWriter write = new BufferedWriter(new FileWriter(tmp))
         ) {
-            String current1 = read1.readLine();
-            String current2 = read2.readLine();
-            String prev1 = "";
-            String prev2 = "";
+            String current1 = getNextValidString(read1, "");
+            String current2 = getNextValidString(read2, "");
             while (current1 != null || current2 != null) {
-                while (current1 != null && (current1.compareTo(prev1) < 0 || !noSpace(current1))) {
-                    current1 = read1.readLine();
-                }
-                while (current2 != null && (current2.compareTo(prev2) < 0 || !noSpace(current2))) {
-                    current2 = read2.readLine();
-                }
                 if (current1 != null && current2 != null) {
                     if (current1.compareTo(current2) < 0) {
                         write.write(current1 + System.lineSeparator());
-                        prev1 = current1;
-                        current1 = read1.readLine();
+                        current1 = getNextValidString(read1, current1);
                     } else {
                         write.write(current2 + System.lineSeparator());
-                        prev2 = current2;
-                        current2 = read2.readLine();
+                        current2 = getNextValidString(read2, current2);
                     }
-                } else if (current1 != null) {
-                    write.write(current1 + System.lineSeparator());
-                    prev1 = current1;
-                    current1 = read1.readLine();
-                } else if (current2 != null) {
-                    write.write(current2 + System.lineSeparator());
-                    prev2 = current2;
-                    current2 = read2.readLine();
                 } else {
-                    current1 = read1.readLine();
-                    current2 = read2.readLine();
+                    write.write((current1 == null ? current2 : current1) + System.lineSeparator());
+                    current1 = getNextValidString(read1, current1);
+                    current2 = getNextValidString(read2, current2);
                 }
             }
         }
         return tmp.toPath();
+    }
+
+    private static Integer getNextValidNumber(BufferedReader reader, Integer prevValue) throws IOException {
+        String line = reader.readLine();
+        while (isInteger(line) && prevValue > Integer.parseInt(line) || line != null && !isInteger(line)) {
+            line = reader.readLine();
+        }
+        return line == null ? null : Integer.parseInt(line);
+    }
+
+    private static String getNextValidString(BufferedReader reader, String prevValue) throws IOException {
+        String line = reader.readLine();
+        while (line != null && (line.compareTo(prevValue) < 0 || !noSpace(line))) {
+            line = reader.readLine();
+        }
+        return line;
     }
 
     private static void writeAsc(Path src, Path dest) throws IOException {
