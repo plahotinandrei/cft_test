@@ -7,8 +7,6 @@ import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.function.BiPredicate;
-import java.util.function.Predicate;
-
 import static ru.cft.merge.Utils.*;
 
 public class FilesSort {
