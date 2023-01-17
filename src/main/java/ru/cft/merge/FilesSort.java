@@ -6,6 +6,7 @@ import java.nio.file.Path;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
 import static ru.cft.merge.Utils.*;
@@ -46,36 +47,36 @@ public class FilesSort {
             String minValue = SortType.STRING.equals(options.getDataType()) ? "" : String.valueOf(Integer.MIN_VALUE);
             Comparator<String> comparator = SortType.STRING.equals(options.getDataType())
                     ? String::compareTo : Comparator.comparing(Integer::valueOf);
-            String current1 = getNextValidValue(reader1, minValue);
-            String current2 = getNextValidValue(reader2, minValue);
+            BiPredicate<String, String> isInvalid = SortType.STRING.equals(options.getDataType())
+                    ? (cur, prev) -> comparator.compare(cur, prev) < 0 || !noSpace(cur)
+                    : (cur, prev) -> isInteger(cur) && comparator.compare(cur, prev) < 0 || !isInteger(cur);
+            String current1 = getNextValidValue(reader1, minValue, isInvalid);
+            String current2 = getNextValidValue(reader2, minValue, isInvalid);
             while (current1 != null || current2 != null) {
                 if (current1 != null && current2 != null) {
                     if (comparator.compare(current1, current2) < 0) {
                         writer.write(current1 + System.lineSeparator());
-                        current1 = getNextValidValue(reader1, current1);
+                        current1 = getNextValidValue(reader1, current1, isInvalid);
                     } else {
                         writer.write(current2 + System.lineSeparator());
-                        current2 = getNextValidValue(reader2, current2);
+                        current2 = getNextValidValue(reader2, current2, isInvalid);
                     }
                 } else {
                     writer.write((current1 == null ? current2 : current1) + System.lineSeparator());
-                    current1 = getNextValidValue(reader1, current1);
-                    current2 = getNextValidValue(reader2, current2);
+                    current1 = getNextValidValue(reader1, current1, isInvalid);
+                    current2 = getNextValidValue(reader2, current2, isInvalid);
                 }
             }
         }
         return tmp.toPath();
     }
 
-    private String getNextValidValue(BufferedReader reader, String prevValue) throws IOException {
-        Predicate<String> isIncorrect = SortType.STRING.equals(options.getDataType())
-                ? (s) -> s.compareTo(prevValue) < 0 || !noSpace(s)
-                : (s) -> isInteger(s) && Integer.parseInt(prevValue) > Integer.parseInt(s) || !isInteger(s);
-        String line = reader.readLine();
-        while (line != null && isIncorrect.test(line)) {
-            line = reader.readLine();
+    private String getNextValidValue(BufferedReader reader, String prevValue, BiPredicate<String, String> isInvalid) throws IOException {
+        String current = reader.readLine();
+        while (current != null && isInvalid.test(current, prevValue)) {
+            current = reader.readLine();
         }
-        return line;
+        return current;
     }
 
     private void writeAsc(Path src, Path dest) throws IOException {
