@@ -3,40 +3,39 @@ package ru.cft.merge;
 import org.apache.commons.io.input.ReversedLinesFileReader;
 import java.io.*;
 import java.nio.file.Path;
+import java.util.Comparator;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Queue;
+import java.util.function.Predicate;
+
 import static ru.cft.merge.Utils.*;
 
 public class FilesSort {
+    private final Options options;
 
-    public static void sort(Options opt) throws IOException {
-        Path srcPath = merge(opt.getInputFiles(), opt.getDataType());
-        Path destPath = opt.getOutputFile();
-        if (SortMode.ASC.equals(opt.getSortMode())) {
-            writeAsc(srcPath, destPath);
-        } else {
-            writeDesc(srcPath, destPath);
-        }
+    public FilesSort(Options options) {
+        this.options = options;
     }
 
-    private static Path merge(List<Path> inputFiles, SortType dataType) throws IOException {
+    public void sort() throws IOException {
         Path rsl = null;
-        Queue<Path> queue = new LinkedList<>(inputFiles);
+        Queue<Path> queue = new LinkedList<>(options.getInputFiles());
         while (!queue.isEmpty()) {
             if (queue.size() == 1) {
                 rsl = queue.poll();
                 break;
             }
-            Path p = SortType.INT.equals(dataType)
-                    ? mergeInt(queue.poll(), queue.poll())
-                    : mergeStr(queue.poll(), queue.poll());
+            Path p = merge(queue.poll(), queue.poll());
             queue.offer(p);
         }
-        return rsl;
+        if (SortMode.ASC.equals(options.getSortMode())) {
+            writeAsc(rsl, options.getOutputFile());
+        } else {
+            writeDesc(rsl, options.getOutputFile());
+        }
     }
 
-    private static Path mergeInt(Path src1, Path src2) throws IOException {
+    private Path merge(Path src1, Path src2) throws IOException {
         File tmp = File.createTempFile(src1 + "_" + src2, ".txt");
         tmp.deleteOnExit();
         try (
@@ -44,73 +43,42 @@ public class FilesSort {
                 BufferedReader reader2 = new BufferedReader(new FileReader(src2.toFile()));
                 BufferedWriter writer = new BufferedWriter(new FileWriter(tmp))
         ) {
-            Integer current1 = getNextValidNumber(reader1, Integer.MIN_VALUE);
-            Integer current2 = getNextValidNumber(reader2, Integer.MIN_VALUE);
+            String minValue = SortType.STRING.equals(options.getDataType()) ? "" : String.valueOf(Integer.MIN_VALUE);
+            Comparator<String> comparator = SortType.STRING.equals(options.getDataType())
+                    ? String::compareTo : Comparator.comparing(Integer::valueOf);
+            String current1 = getNextValidValue(reader1, minValue);
+            String current2 = getNextValidValue(reader2, minValue);
             while (current1 != null || current2 != null) {
                 if (current1 != null && current2 != null) {
-                    if (current1 < current2) {
+                    if (comparator.compare(current1, current2) < 0) {
                         writer.write(current1 + System.lineSeparator());
-                        current1 = getNextValidNumber(reader1, current1);
+                        current1 = getNextValidValue(reader1, current1);
                     } else {
                         writer.write(current2 + System.lineSeparator());
-                        current2 = getNextValidNumber(reader2, current2);
+                        current2 = getNextValidValue(reader2, current2);
                     }
                 } else {
                     writer.write((current1 == null ? current2 : current1) + System.lineSeparator());
-                    current1 = getNextValidNumber(reader1, current1);
-                    current2 = getNextValidNumber(reader2, current2);
+                    current1 = getNextValidValue(reader1, current1);
+                    current2 = getNextValidValue(reader2, current2);
                 }
             }
         }
         return tmp.toPath();
     }
 
-    private static Path mergeStr(Path src1, Path src2) throws IOException {
-        File tmp = File.createTempFile(src1 + "_" + src2, ".txt");
-        tmp.deleteOnExit();
-        try (
-                BufferedReader reader1 = new BufferedReader(new FileReader(src1.toFile()));
-                BufferedReader reader2 = new BufferedReader(new FileReader(src2.toFile()));
-                BufferedWriter writer = new BufferedWriter(new FileWriter(tmp))
-        ) {
-            String current1 = getNextValidString(reader1, "");
-            String current2 = getNextValidString(reader2, "");
-            while (current1 != null || current2 != null) {
-                if (current1 != null && current2 != null) {
-                    if (current1.compareTo(current2) < 0) {
-                        writer.write(current1 + System.lineSeparator());
-                        current1 = getNextValidString(reader1, current1);
-                    } else {
-                        writer.write(current2 + System.lineSeparator());
-                        current2 = getNextValidString(reader2, current2);
-                    }
-                } else {
-                    writer.write((current1 == null ? current2 : current1) + System.lineSeparator());
-                    current1 = getNextValidString(reader1, current1);
-                    current2 = getNextValidString(reader2, current2);
-                }
-            }
-        }
-        return tmp.toPath();
-    }
-
-    private static Integer getNextValidNumber(BufferedReader reader, Integer prevValue) throws IOException {
+    private String getNextValidValue(BufferedReader reader, String prevValue) throws IOException {
+        Predicate<String> isIncorrect = SortType.STRING.equals(options.getDataType())
+                ? (s) -> s.compareTo(prevValue) < 0 || !noSpace(s)
+                : (s) -> isInteger(s) && Integer.parseInt(prevValue) > Integer.parseInt(s) || !isInteger(s);
         String line = reader.readLine();
-        while (line != null && (isInteger(line) && prevValue > Integer.parseInt(line) || !isInteger(line))) {
-            line = reader.readLine();
-        }
-        return line == null ? null : Integer.parseInt(line);
-    }
-
-    private static String getNextValidString(BufferedReader reader, String prevValue) throws IOException {
-        String line = reader.readLine();
-        while (line != null && (line.compareTo(prevValue) < 0 || !noSpace(line))) {
+        while (line != null && isIncorrect.test(line)) {
             line = reader.readLine();
         }
         return line;
     }
 
-    private static void writeAsc(Path src, Path dest) throws IOException {
+    private void writeAsc(Path src, Path dest) throws IOException {
         try (
             BufferedReader reader = new BufferedReader(new FileReader(src.toFile()));
             BufferedWriter writer = new BufferedWriter(new FileWriter(dest.toFile()))
@@ -122,7 +90,7 @@ public class FilesSort {
         }
     }
 
-    private static void writeDesc(Path src, Path dest) throws IOException {
+    private void writeDesc(Path src, Path dest) throws IOException {
         try (
                 ReversedLinesFileReader reader = new ReversedLinesFileReader(src.toFile());
                 BufferedWriter writer = new BufferedWriter(new FileWriter(dest.toFile()))
@@ -131,6 +99,16 @@ public class FilesSort {
             while ((line = reader.readLine()) != null) {
                 writer.write(line + System.lineSeparator());
             }
+        }
+    }
+
+    public static void main(String[] args) {
+        try {
+            Options opt = Options.of(args);
+            new FilesSort(opt).sort();
+            System.out.println("Sorting completed successfully!");
+        } catch (IOException e) {
+            System.out.println("Resource error, try restarting!");
         }
     }
 }

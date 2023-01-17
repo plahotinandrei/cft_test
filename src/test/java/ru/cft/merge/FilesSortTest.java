@@ -70,7 +70,7 @@ public class FilesSortTest {
         String outputFilePath = folder.newFile("out.txt").getPath();
         String[] args = new String[] {"-i", "-a", outputFilePath, inputFilePath1, inputFilePath2, inputFilePath3};
         Options opt = Options.of(args);
-        FilesSort.sort(opt);
+        new FilesSort(opt).sort();
         StringBuilder rsl = new StringBuilder();
         try (BufferedReader in = new BufferedReader(new FileReader(outputFilePath))) {
             in.lines().forEach(rsl::append);
@@ -84,7 +84,7 @@ public class FilesSortTest {
         String outputFilePath = folder.newFile("out.txt").getPath();
         String[] args = new String[] {"-i", "-d", outputFilePath, inputFilePath1, inputFilePath2, inputFilePath3};
         Options opt = Options.of(args);
-        FilesSort.sort(opt);
+        new FilesSort(opt).sort();
         StringBuilder rsl = new StringBuilder();
         try (BufferedReader in = new BufferedReader(new FileReader(outputFilePath))) {
             in.lines().forEach(rsl::append);
@@ -98,7 +98,7 @@ public class FilesSortTest {
         String outputFilePath = folder.newFile("out.txt").getPath();
         String[] args = new String[] {"-s", outputFilePath, inputFilePath1, inputFilePath3};
         Options opt = Options.of(args);
-        FilesSort.sort(opt);
+        new FilesSort(opt).sort();
         StringBuilder rsl = new StringBuilder();
         try (BufferedReader in = new BufferedReader(new FileReader(outputFilePath))) {
             in.lines().forEach(rsl::append);
@@ -112,7 +112,7 @@ public class FilesSortTest {
         String outputFilePath = folder.newFile("out.txt").getPath();
         String[] args = new String[] {"-s", "-d", outputFilePath, inputFilePath1, inputFilePath3};
         Options opt = Options.of(args);
-        FilesSort.sort(opt);
+        new FilesSort(opt).sort();
         StringBuilder rsl = new StringBuilder();
         try (BufferedReader in = new BufferedReader(new FileReader(outputFilePath))) {
             in.lines().forEach(rsl::append);
@@ -126,7 +126,7 @@ public class FilesSortTest {
         String outputFilePath = folder.newFile("out.txt").getPath();
         String[] args = new String[] {"-i", "-a", outputFilePath, inputFilePath3, inputFilePath4, inputFilePath5};
         Options opt = Options.of(args);
-        FilesSort.sort(opt);
+        new FilesSort(opt).sort();
         StringBuilder rsl = new StringBuilder();
         try (BufferedReader in = new BufferedReader(new FileReader(outputFilePath))) {
             in.lines().forEach(rsl::append);
@@ -140,7 +140,7 @@ public class FilesSortTest {
         String outputFilePath = folder.newFile("out.txt").getPath();
         String[] args = new String[] {"-i", "-d", outputFilePath, inputFilePath3, inputFilePath4, inputFilePath5};
         Options opt = Options.of(args);
-        FilesSort.sort(opt);
+        new FilesSort(opt).sort();
         StringBuilder rsl = new StringBuilder();
         try (BufferedReader in = new BufferedReader(new FileReader(outputFilePath))) {
             in.lines().forEach(rsl::append);
@@ -154,7 +154,7 @@ public class FilesSortTest {
         String outputFilePath = folder.newFile("out.txt").getPath();
         String[] args = new String[] {"-s", "-a", outputFilePath, inputFilePath3, inputFilePath5};
         Options opt = Options.of(args);
-        FilesSort.sort(opt);
+        new FilesSort(opt).sort();
         StringBuilder rsl = new StringBuilder();
         try (BufferedReader in = new BufferedReader(new FileReader(outputFilePath))) {
             in.lines().forEach(rsl::append);
@@ -168,7 +168,7 @@ public class FilesSortTest {
         String outputFilePath = folder.newFile("out.txt").getPath();
         String[] args = new String[] {"-s", "-d", outputFilePath, inputFilePath4, inputFilePath5};
         Options opt = Options.of(args);
-        FilesSort.sort(opt);
+        new FilesSort(opt).sort();
         StringBuilder rsl = new StringBuilder();
         try (BufferedReader in = new BufferedReader(new FileReader(outputFilePath))) {
             in.lines().forEach(rsl::append);
@@ -182,7 +182,7 @@ public class FilesSortTest {
         String outputFilePath = folder.newFile("out.txt").getPath();
         String[] args = new String[] {"-i", "-a", outputFilePath, inputFilePath1};
         Options opt = Options.of(args);
-        FilesSort.sort(opt);
+        new FilesSort(opt).sort();
         StringBuilder rsl = new StringBuilder();
         try (BufferedReader in = new BufferedReader(new FileReader(outputFilePath))) {
             in.lines().forEach(rsl::append);
@@ -196,7 +196,7 @@ public class FilesSortTest {
         String outputFilePath = folder.newFile("out.txt").getPath();
         String[] args = new String[] {"-i", "-a", outputFilePath, inputFilePath1, inputFilePath6};
         Options opt = Options.of(args);
-        FilesSort.sort(opt);
+        new FilesSort(opt).sort();
         StringBuilder rsl = new StringBuilder();
         try (BufferedReader in = new BufferedReader(new FileReader(outputFilePath))) {
             in.lines().forEach(rsl::append);
