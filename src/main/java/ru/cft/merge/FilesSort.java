@@ -27,10 +27,12 @@ public class FilesSort {
             Path p = merge(queue.poll(), queue.poll());
             queue.offer(p);
         }
-        if (SortMode.ASC.equals(options.getSortMode())) {
-            writeAsc(rsl, options.getOutputFile());
-        } else {
-            writeDesc(rsl, options.getOutputFile());
+        if (rsl != null) {
+            if (SortMode.ASC.equals(options.getSortMode())) {
+                writeAsc(rsl, options.getOutputFile());
+            } else {
+                writeDesc(rsl, options.getOutputFile());
+            }
         }
     }
 
